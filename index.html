@@ -22,21 +22,47 @@
             transform: none;
         }
     }
+    .check-ability .player-window {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
 </style>
 
 <body>
     <div class="container">
-        <div style="text-align: center;">
-            <h1>Мешок случайности</h1>
-            <select id="bagSelector" class="form-select">
-                <option disabled="disabled">Сложность мешка</option>
-                <option selected value="easy">Лёгкий мешок</option>
-                <option value="normal">Нормальный мешок</option>
-              </select>
-            <button style="margin: 10px;" type="button" class="btn btn-primary" onclick="randomToken()">Вытащить жетон</button>
-            <p style="margin: 10px;"><img class="" data-token onclick="randomToken()" src=""></p>
-            <!-- <p>Значения в мешке: </p> -->
-            <p id="bagContent"></p>
+        <div class="row">
+            <div style="text-align: center;">
+                <h1>Мешок случайности</h1>
+                <select id="bagSelector" class="form-select">
+                    <option disabled="disabled">Сложность мешка</option>
+                    <option selected value="easy">Лёгкий мешок</option>
+                    <option value="normal">Нормальный мешок</option>
+                </select>
+                <button style="margin: 10px;" type="button" class="btn btn-primary" onclick="randomToken()">Вытащить
+                    жетон</button>
+                <p style="margin: 10px;"><img class="" data-token onclick="randomToken()" src=""></p>
+                <!-- <p>Значения в мешке: </p> -->
+                <p id="bagContent"></p>
+            </div>
+        </div>
+        <div class="row">
+            <h5>Порядок проверки навыка</h5>
+            <ol class="check-ability">
+                <li><em>Проверка навыка начинается.</em> Определи навык, который хочешь проверить.</li>
+                <p class="player-window"><strong>Окно игрока</strong></p>
+                <li>
+                    Добавь к проверке карты с руки.
+                </li>
+                <p class="player-window"><strong>Окно игрока</strong></p>
+                <li>
+                    Вытяни жетон хаоса.
+                </li>
+                <li>Разыграй эффект символа хаоса.</li>
+                <li>Подсчитай итоговое значение навыка.</li>
+                <li>Определи успех или провал проверки.</li>
+                <li>Примени результат проверки.</li>
+                <li><em>Проверка навыка завершена.</em></li>
+            </ol>
         </div>
     </div>
 </body>
@@ -125,7 +151,7 @@
 
         tokenRotated = true;
         tokenImg.classList.add('flip');
-        setTimeout(()=> {
+        setTimeout(() => {
             updateTokenImg(selectedBag[tokenValue]);
             tokenImg.classList.remove('flip');
             tokenRotated = false;
