@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    
     <title>Random Bag</title>
 </head>
 
@@ -27,76 +28,90 @@
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
+
+    .active-phase {
+        background-color: #bbbbfd;
+    }
 </style>
 
 <body>
     <div class="container">
         <div class="row">
-            <div style="text-align: center;">
-                <h1>Мешок случайности</h1>
-                <select id="bagSelector" class="form-select">
-                    <option disabled="disabled">Сложность мешка</option>
-                    <option selected value="easy">Лёгкий мешок</option>
-                    <option value="normal">Нормальный мешок</option>
-                </select>
-                <button style="margin: 10px;" type="button" class="btn btn-primary" onclick="randomToken()">Вытащить
-                    жетон</button>
-                <p style="margin: 10px;"><img class="" data-token onclick="randomToken()" src=""></p>
-                <!-- <p>Значения в мешке: </p> -->
-                <p id="bagContent"></p>
+            <div class="col-sm-12">
+                <div style="text-align: center;">
+                    <h1>Мешок случайности</h1>
+                    <select id="bagSelector" class="form-select">
+                        <option disabled="disabled">Сложность мешка</option>
+                        <option selected value="easy">Лёгкий мешок</option>
+                        <option value="normal">Нормальный мешок</option>
+                    </select>
+                    <button style="margin: 10px;" type="button" class="btn btn-primary" onclick="randomToken()">Вытащить
+                        жетон</button>
+                    <p style="margin: 10px;"><img class="" data-token onclick="randomToken()" src=""></p>
+                    <!-- <p>Значения в мешке: </p> -->
+                    <p id="bagContent"></p>
+                </div>
             </div>
         </div>
         <div class="row">
-            <h5>Порядок проверки навыка</h5>
-            <ol class="check-ability">
-                <li><em>Проверка навыка начинается.</em> Определи навык, который хочешь проверить.</li>
-                <p class="player-window"><strong>Окно игрока</strong></p>
-                <li>
-                    Добавь к проверке карты с руки.
-                </li>
-                <p class="player-window"><strong>Окно игрока</strong></p>
-                <li>
-                    Вытяни жетон хаоса.
-                </li>
-                <li>Разыграй эффект символа хаоса.</li>
-                <li>Подсчитай итоговое значение навыка.</li>
-                <li>Определи успех или провал проверки.</li>
-                <li>Примени результат проверки.</li>
-                <li><em>Проверка навыка завершена.</em></li>
-            </ol>
+            <a class="h5" data-bs-toggle="collapse" href="#checkAbilityHintRow" >Порядок проверки навыка</a>
+        </div>
+        <div id="checkAbilityHintRow" class="row collapse">
+            <div class="col-sm-12">
+                <ol class="check-ability">
+                    <li><em>Проверка навыка начинается.</em> Определи навык, который хочешь проверить.</li>
+                    <p class="player-window"><strong>Окно игрока</strong></p>
+                    <li>
+                        Добавь к проверке карты с руки.
+                    </li>
+                    <p class="player-window"><strong>Окно игрока</strong></p>
+                    <li>
+                        Вытяни жетон хаоса.
+                    </li>
+                    <li>Разыграй эффект символа хаоса.</li>
+                    <li>Подсчитай итоговое значение навыка.</li>
+                    <li>Определи успех или провал проверки.</li>
+                    <li>Примени результат проверки.</li>
+                    <li><em>Проверка навыка завершена.</em></li>
+                </ol>
+            </div>
         </div>
         <div class="row">
-            <h5>Раунд</h5>
-            <ol class="">
-                <li>Фаза мифа. <em>Пропусти в первом раунде.</em>
-                    <ul>
-                        <li>Положи 1 безысходность на замысел</li>
-                        <li>Проверь число безысходность. Если достигнуто нужное значание, замысел продвигается.</li>
-                        <li>Каждый сыщик берёт 1 карту с колоды контактов.</li>
-                    </ul>
-                </li>
-                <li>Фаза сыщиков.
-                    <ul>
-                        <li>Три действия.</li>
-                    </ul>
-                </li>
-                <li>Фаза врагов.
-                    <ul>
-                        <li>Перемещаются враги охотники.</li>
-                    </ul>
-                    <ul>
-                        <li>Каждый сражающийся враг атакует, если может.</li>
-                    </ul>
-                </li>
-                <li>Фаза передышки.
-                    <ul>
-                        <li>Обновите действия.</li>
-                        <li>Разверните все повёрнутые карты.</li>
-                        <li>Каждый сыщик берёт 1 карту и получает 1 ресурс.</li>
-                        <li>Проверка размера руки (до 8 карт).</li>
-                    </ul>
-                </li>
-            </ol>
+            <a class="h5" data-bs-toggle="collapse" href="#phaseHintRow" >Раунд</a>
+        </div>
+        <div id="phaseHintRow" class="row collapse">
+            <div class="col-sm-12">
+                <ol>
+                    <li data-phase-hint>Фаза мифа. <em>Пропусти в первом раунде.</em>
+                        <ul>
+                            <li>Положи 1 безысходность на замысел</li>
+                            <li>Проверь число безысходность. Если достигнуто нужное значание, замысел продвигается.</li>
+                            <li>Каждый сыщик берёт 1 карту с колоды контактов.</li>
+                        </ul>
+                    </li>
+                    <li data-phase-hint>Фаза сыщиков.
+                        <ul>
+                            <li>Три действия.</li>
+                        </ul>
+                    </li>
+                    <li data-phase-hint>Фаза врагов.
+                        <ul>
+                            <li>Перемещаются враги охотники.</li>
+                        </ul>
+                        <ul>
+                            <li>Каждый сражающийся враг атакует, если может.</li>
+                        </ul>
+                    </li>
+                    <li data-phase-hint>Фаза передышки.
+                        <ul>
+                            <li>Обновите действия.</li>
+                            <li>Разверните все повёрнутые карты.</li>
+                            <li>Каждый сыщик берёт 1 карту и получает 1 ресурс.</li>
+                            <li>Проверка размера руки (до 8 карт).</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
         </div>
     </div>
 </body>
@@ -191,6 +206,17 @@
             tokenRotated = false;
         }, 2000);
     }
+
+    const phaseHintEls = document.querySelectorAll('li[data-phase-hint]');
+    const activePhaseCss = 'active-phase';
+    phaseHintEls.forEach(el => {
+        el.addEventListener('click', (event) => {
+            phaseHintEls.forEach(el => {
+                el.classList.remove(activePhaseCss);
+            });
+            event.currentTarget.classList.add(activePhaseCss);
+        });
+    });
 </script>
 
 </html>
