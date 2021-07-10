@@ -28,13 +28,39 @@
     <div class="container">
         <div style="text-align: center;">
             <h1>Мешок случайности</h1>
-            <button type="button" class="btn btn-primary" onclick="randomToken()">Вытащить жетон</button>
+            <select id="bagSelector" class="form-select">
+                <option disabled="disabled">Сложность мешка</option>
+                <option selected value="easy">Лёгкий мешок</option>
+                <option value="normal">Нормальный мешок</option>
+              </select>
+            <button style="margin: 10px;" type="button" class="btn btn-primary" onclick="randomToken()">Вытащить жетон</button>
             <p style="margin: 10px;"><img class="" data-token onclick="randomToken()" src=""></p>
+            <!-- <p>Значения в мешке: </p> -->
+            <p id="bagContent"></p>
         </div>
     </div>
 </body>
 <script>
     const easyBag = [
+        'p1',
+        'p1',
+        '0',
+        '0',
+        '0',
+        'm1',
+        'm1',
+        'm1',
+        'm2',
+        'm2',
+        'skull',
+        'skull',
+        'cultist',
+        'mirror',
+        'doom',
+        'special',
+    ];
+
+    const normalBag = [
         'p1',
         '0',
         '0',
@@ -61,23 +87,46 @@
 
     let tokenRotated = false;
 
+    const bagSelector = document.getElementById('bagSelector');
+
+    function updateTokenImg(value) {
+        document.querySelector('img[data-token]').setAttribute('src', 'assets/' + value + '.png');
+    }
+
     function randomToken() {
         if (tokenRotated) {
             return;
         }
+        let selectedBag;
+
+        switch (bagSelector.value) {
+            case 'easy': {
+                selectedBag = easyBag;
+                break;
+            }
+            case 'normal': {
+                selectedBag = normalBag;
+                break;
+            }
+            default: {
+                throw 'invalid bagSelector value';
+            }
+        }
+
+        // document.getElementById('bagContent').innerText = selectedBag;
 
         const tokenValue = getRandomInt(0, 16);
         const tokenImg = document.querySelector('img[data-token]');
 
         if (tokenImg.getAttribute('src') === '') {
-            document.querySelector('img[data-token]').setAttribute('src', 'assets/' + easyBag[tokenValue] + '.png');
+            updateTokenImg(selectedBag[tokenValue]);
             return;
         }
 
         tokenRotated = true;
         tokenImg.classList.add('flip');
         setTimeout(()=> {
-            document.querySelector('img[data-token]').setAttribute('src', 'assets/' + easyBag[tokenValue] + '.png');
+            updateTokenImg(selectedBag[tokenValue]);
             tokenImg.classList.remove('flip');
             tokenRotated = false;
         }, 2000);
