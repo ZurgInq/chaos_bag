@@ -8,53 +8,122 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    
+    <script src="https://unpkg.com/vue@next"></script>
+
     <title>Random Bag</title>
-</head>
 
-<style>
-    .flip {
-        transform: rotateY(720deg);
-        animation: rotate 2s ease-in-out;
-    }
-
-    @keyframes rotate {
-        100% {
-            transform: none;
+    <style>
+        .flip {
+            transform: rotateY(720deg);
+            animation: rotate 2s ease-in-out;
         }
-    }
-
-    .check-ability .player-window {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .active-phase {
-        background-color: #bbbbfd;
-    }
-</style>
-
+    
+        @keyframes rotate {
+            100% {
+                transform: none;
+            }
+        }
+    
+        .check-ability .player-window {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    
+        .active-phase {
+            background-color: #bbbbfd;
+        }
+    
+        .miniTokens figure {
+            width: 12%;
+            margin: 0.1rem;
+        }
+    </style>
+</head>
 <body>
-    <div class="container">
+    <div id="app" class="container">
         <div class="row">
-            <div class="col-sm-12">
-                <div style="text-align: center;">
-                    <h1>Мешок случайности</h1>
-                    <select id="bagSelector" class="form-select">
-                        <option disabled="disabled">Сложность мешка</option>
-                        <option selected value="easy">Лёгкий мешок</option>
-                        <option value="normal">Нормальный мешок</option>
-                    </select>
-                    <button style="margin: 10px;" type="button" class="btn btn-primary" onclick="randomToken()">Вытащить
-                        жетон</button>
-                    <p style="margin: 10px;"><img class="" data-token onclick="randomToken()" src=""></p>
-                    <!-- <p>Значения в мешке: </p> -->
-                    <p id="bagContent"></p>
+            <div style="text-align: center;" class="col-sm-12">
+                <h1>Мешок случайности</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <select @change="bagSelectChange" class="form-select">
+                    <option disabled="disabled">Сложность мешка</option>
+                    <option selected value="easy">Лёгкий мешок ({{easyBag.length}})</option>
+                    <option value="normal">Нормальный мешок ({{normalBag.length}})</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#tokensInBagInfo"
+                    class="btn btn-info">Жетоны в мешке ({{ tokensCount() }})</button>
+                <!-- Modal -->
+                <div class="modal fade" id="tokensInBagInfo" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Жетоны в мешке</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal">
+
+                                </button>
+                            </div>
+                            <div class="modal-body miniTokens">
+                                <div class="tokensInBag" @click="removeTokenClick">
+                                    <template v-for="(item, index) in chaosBag.standardBag()">
+                                        <img-token :name="item" v-bind:percent="chaosBag.calcPercent(item)"></img-token>
+                                    </template>
+                                    <hr>
+                                    <div><p>Кликни на добавленный жетон для удаления:</p></div>
+                                    <template v-for="(item, index) in chaosBag.additionals()">
+                                        <img-token :name="item" v-bind:percent="chaosBag.calcPercent(item)"></img-token>
+                                    </template>
+                                </div>
+                                <hr>
+                                <div style="padding-top: 1rem;"><p>Кликни для добавления жетона:</p></div>
+                                
+                                <div @click="availableTokensClick" id="addAvailableTokens">
+                                    <img-token name="p1"></img-token>
+                                    <img-token name="0"></img-token>
+                                    <img-token name="m1"></img-token>
+                                    <img-token name="m2"></img-token>
+                                    <img-token name="m3"></img-token>
+                                    <img-token name="m4"></img-token>
+                                    <img-token name="m5"></img-token>
+                                    <img-token name="m6"></img-token>
+                                    <img-token name="m7"></img-token>
+                                    <img-token name="m8"></img-token>
+                                    <img-token name="skull"></img-token>
+                                    <img-token name="ancient"></img-token>
+                                    <img-token name="cultist"></img-token>
+                                    <img-token name="doom"></img-token>
+                                    <img-token name="special"></img-token>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" @click="resetBagClick" class="btn btn-warning">Сброс</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <a class="h5" data-bs-toggle="collapse" href="#checkAbilityHintRow" >Порядок проверки навыка</a>
+            <div class="col-sm-12">
+                <div style="text-align: center;">
+                    <button style="margin: 10px;" type="button" class="btn btn-primary" @click="randomToken()">Вытащить
+                        жетон</button>
+                    <p style="margin: 10px;"><img class="" data-token @click="randomToken()" src=""></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <a class="h5" data-bs-toggle="collapse" href="#checkAbilityHintRow">Порядок проверки навыка</a>
         </div>
         <div id="checkAbilityHintRow" class="row collapse">
             <div class="col-sm-12">
@@ -77,7 +146,7 @@
             </div>
         </div>
         <div class="row">
-            <a class="h5" data-bs-toggle="collapse" href="#phaseHintRow" >Раунд</a>
+            <a class="h5" data-bs-toggle="collapse" href="#phaseHintRow">Раунд</a>
         </div>
         <div id="phaseHintRow" class="row collapse">
             <div class="col-sm-12">
@@ -114,109 +183,20 @@
             </div>
         </div>
     </div>
-</body>
-<script>
-    const easyBag = [
-        'p1',
-        'p1',
-        '0',
-        '0',
-        '0',
-        'm1',
-        'm1',
-        'm1',
-        'm2',
-        'm2',
-        'skull',
-        'skull',
-        'cultist',
-        'mirror',
-        'doom',
-        'special',
-    ];
 
-    const normalBag = [
-        'p1',
-        '0',
-        '0',
-        'm1',
-        'm1',
-        'm1',
-        'm2',
-        'm2',
-        'm3',
-        'm4',
-        'skull',
-        'skull',
-        'cultist',
-        'mirror',
-        'doom',
-        'special',
-    ];
+    <script src="app.js"></script>
+    <script>
+        const phaseHintEls = document.querySelectorAll('li[data-phase-hint]');
+        const activePhaseCss = 'active-phase';
 
-    function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
-    }
-
-    let tokenRotated = false;
-
-    const bagSelector = document.getElementById('bagSelector');
-
-    function updateTokenImg(value) {
-        document.querySelector('img[data-token]').setAttribute('src', 'assets/' + value + '.png');
-    }
-
-    function randomToken() {
-        if (tokenRotated) {
-            return;
-        }
-        let selectedBag;
-
-        switch (bagSelector.value) {
-            case 'easy': {
-                selectedBag = easyBag;
-                break;
-            }
-            case 'normal': {
-                selectedBag = normalBag;
-                break;
-            }
-            default: {
-                throw 'invalid bagSelector value';
-            }
-        }
-
-        // document.getElementById('bagContent').innerText = selectedBag;
-
-        const tokenValue = getRandomInt(0, 16);
-        const tokenImg = document.querySelector('img[data-token]');
-
-        if (tokenImg.getAttribute('src') === '') {
-            updateTokenImg(selectedBag[tokenValue]);
-            return;
-        }
-
-        tokenRotated = true;
-        tokenImg.classList.add('flip');
-        setTimeout(() => {
-            updateTokenImg(selectedBag[tokenValue]);
-            tokenImg.classList.remove('flip');
-            tokenRotated = false;
-        }, 2000);
-    }
-
-    const phaseHintEls = document.querySelectorAll('li[data-phase-hint]');
-    const activePhaseCss = 'active-phase';
-    phaseHintEls.forEach(el => {
-        el.addEventListener('click', (event) => {
-            phaseHintEls.forEach(el => {
-                el.classList.remove(activePhaseCss);
+        phaseHintEls.forEach(el => {
+            el.addEventListener('click', (event) => {
+                phaseHintEls.forEach(el => {
+                    el.classList.remove(activePhaseCss);
+                });
+                event.currentTarget.classList.add(activePhaseCss);
             });
-            event.currentTarget.classList.add(activePhaseCss);
         });
-    });
-</script>
-
+    </script>
+</body>
 </html>
